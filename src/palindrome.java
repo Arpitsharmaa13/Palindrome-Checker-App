@@ -1,6 +1,5 @@
 import java.util.Scanner;
-
-import java.util.Scanner;
+import java.util.Stack;
 
 public class palindrome {
 
@@ -13,20 +12,27 @@ public class palindrome {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Enter a word: ");
-        String word = sc.nextLine();
+        String input = sc.nextLine();
+
+        Stack<Character> stack = new Stack<>();
+
+        // push characters into stack
+        for(int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
 
         String reverse = "";
 
-        // reverse logic
-        for(int i = word.length() - 1; i >= 0; i--) {
-            reverse = reverse + word.charAt(i);
+        // pop characters (reverse order)
+        while(!stack.isEmpty()) {
+            reverse = reverse + stack.pop();
         }
 
-        // check palindrome
-        if(word.equals(reverse)) {
-            System.out.println(word + " is a Palindrome");
+        // compare
+        if(input.equals(reverse)) {
+            System.out.println(input + " is a Palindrome");
         } else {
-            System.out.println(word + " is NOT a Palindrome");
+            System.out.println(input + " is NOT a Palindrome");
         }
 
         sc.close();
