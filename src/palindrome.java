@@ -1,72 +1,39 @@
 import java.util.*;
 
-// Main class
-public class palindrome{
+public class palindrome {
 
-    public static void main(String[] args) {
+    // Two-pointer approach
+    public static boolean twoPointer(String input) {
+        int start = 0, end = input.length() - 1;
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter a word: ");
-        String input = sc.nextLine();
-
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack");
-        System.out.println("2. Deque");
-
-        int choice = sc.nextInt();
-
-        PalindromeStrategy strategy;
-
-        if(choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
+        while(start < end) {
+            if(input.charAt(start) != input.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
         }
-
-        boolean result = strategy.checkPalindrome(input);
-
-        if(result) {
-            System.out.println(input + " is a Palindrome");
-        } else {
-            System.out.println(input + " is NOT a Palindrome");
-        }
-
-        sc.close();
+        return true;
     }
-}
 
-// Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
-
-// Stack Implementation
-class StackStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
+    // Stack approach
+    public static boolean stackMethod(String input) {
         Stack<Character> stack = new Stack<>();
 
         for(char ch : input.toCharArray()) {
             stack.push(ch);
         }
 
-        String reverse = "";
-
-        while(!stack.isEmpty()) {
-            reverse += stack.pop();
+        for(char ch : input.toCharArray()) {
+            if(ch != stack.pop()) {
+                return false;
+            }
         }
-
-        return input.equals(reverse);
+        return true;
     }
-}
 
-// Deque Implementation
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean checkPalindrome(String input) {
-
+    // Deque approach
+    public static boolean dequeMethod(String input) {
         Deque<Character> deque = new LinkedList<>();
 
         for(char ch : input.toCharArray()) {
@@ -78,7 +45,40 @@ class DequeStrategy implements PalindromeStrategy {
                 return false;
             }
         }
-
         return true;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a word: ");
+        String input = sc.nextLine();
+
+        // --- Two Pointer ---
+        long startTime = System.nanoTime();
+        boolean res1 = twoPointer(input);
+        long endTime = System.nanoTime();
+        long time1 = endTime - startTime;
+
+        // --- Stack ---
+        startTime = System.nanoTime();
+        boolean res2 = stackMethod(input);
+        endTime = System.nanoTime();
+        long time2 = endTime - startTime;
+
+        // --- Deque ---
+        startTime = System.nanoTime();
+        boolean res3 = dequeMethod(input);
+        endTime = System.nanoTime();
+        long time3 = endTime - startTime;
+
+        // Results
+        System.out.println("\nResults:");
+        System.out.println("Two Pointer: " + res1 + " | Time: " + time1 + " ns");
+        System.out.println("Stack: " + res2 + " | Time: " + time2 + " ns");
+        System.out.println("Deque: " + res3 + " | Time: " + time3 + " ns");
+
+        sc.close();
     }
 }
