@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class palindrome {
 
@@ -15,21 +17,27 @@ public class palindrome {
         String input = sc.nextLine();
 
         Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
 
-        // push characters into stack
+        // insert into both
         for(int i = 0; i < input.length(); i++) {
-            stack.push(input.charAt(i));
+            char ch = input.charAt(i);
+            stack.push(ch);     // LIFO
+            queue.add(ch);      // FIFO
         }
 
-        String reverse = "";
-
-        // pop characters (reverse order)
-        while(!stack.isEmpty()) {
-            reverse = reverse + stack.pop();
-        }
+        boolean isPalindrome = true;
 
         // compare
-        if(input.equals(reverse)) {
+        while(!stack.isEmpty()) {
+            if(stack.pop() != queue.remove()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        // result
+        if(isPalindrome) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
