@@ -9,31 +9,41 @@ public class palindrome {
         System.out.print("Enter a sentence: ");
         String input = sc.nextLine();
 
-        // Step 1: Normalize string
-        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // create object of service class
+        PalindromeChecker checker = new PalindromeChecker();
 
-        // Step 2: Check palindrome (two-pointer)
-        int start = 0;
-        int end = cleaned.length() - 1;
+        boolean result = checker.checkPalindrome(input);
 
-        boolean isPalindrome = true;
-
-        while(start < end) {
-            if(cleaned.charAt(start) != cleaned.charAt(end)) {
-                isPalindrome = false;
-                break;
-            }
-            start++;
-            end--;
-        }
-
-        // Step 3: Output result
-        if(isPalindrome) {
+        if(result) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
         }
 
         sc.close();
+    }
+}
+
+// Service class (OOP)
+class PalindromeChecker {
+
+    public boolean checkPalindrome(String input) {
+
+        // Step 1: Normalize string
+        String cleaned = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        int start = 0;
+        int end = cleaned.length() - 1;
+
+        // Step 2: Two-pointer check
+        while(start < end) {
+            if(cleaned.charAt(start) != cleaned.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+
+        return true;
     }
 }
